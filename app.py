@@ -54,7 +54,7 @@ def roll(bot, update, args):
 
 def main():
 
-    updater = Updater("")
+    updater = Updater(os.environ.get('BOTID'))
 
     dp = updater.dispatcher
 
@@ -71,4 +71,4 @@ def main():
 
 
 if __name__ == '__main__':
-main()
+	main()
