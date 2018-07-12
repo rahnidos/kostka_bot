@@ -51,7 +51,9 @@ def roll(bot, update, args):
         except ValueError:
             wrzut = rzut+'='+str(eval(rzut))
         update.message.reply_text(str(wrzut))
-
+def answer(bot, update):
+    if '99' in update.message.text.lower():
+        update.message.reply_text('99? trafiasz w Jandziaka!')
 def main():
 
     updater = Updater(os.environ.get('BOTID'))
@@ -62,7 +64,7 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("rzut", roll, pass_args=True))
     dp.add_handler(CommandHandler("roll", roll, pass_args=True))
-
+    dp.add_handler(MessageHandler(Filters.text, answer))
     dp.add_error_handler(error)
 
     updater.start_polling()
