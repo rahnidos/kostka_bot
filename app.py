@@ -10,7 +10,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 cuda = {'ham':'hamrol(bot, update)',
-        'ka':'rolka()'}
+        'ka':'update.message.reply_text(\'🧻\')'}
 
 def start(bot, update):
     update.message.reply_text('Wystartowałem!')
@@ -71,9 +71,9 @@ def hamrol(bot, update):
     if(update.message.chat.id==int(os.environ.get('KOSTKA_PRV'))):
         img=os.environ.get('KOSTKA_HAM')+choice(os.listdir(os.environ.get('KOSTKA_HAM')))
         bot.send_photo(chat_id=update.message.chat.id, photo=open(img, 'rb'))
-
     else:
-        update.message.reply_text(os.environ.get('KOSTKA_PRV'))
+        update.message.reply_text('nie znam człowieka...')
+
 def main():
 
     updater = Updater(os.environ.get('KOSTKA_BOTID'))
