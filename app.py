@@ -1,5 +1,5 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from random import randint
+from random import randint, choice
 import re
 import logging
 import os
@@ -9,6 +9,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
+cuda = {'ham':'hamrol(bot, update)',
+        'ka':'rolka()'}
 
 def start(bot, update):
     update.message.reply_text('Wystartowałem!')
@@ -45,18 +47,36 @@ def roll(bot, update, args):
         update.message.reply_text('Ale czym mam rzucać?')
         rzut=''
     if(rzut):
-        rzut = re.sub('(\d+)?k\d+',dice_replace,rzut)
-        try:
-            wrzut=int(rzut)
-        except ValueError:
-            wrzut = rzut+'='+str(eval(rzut))
-        update.message.reply_text(str(wrzut))
+        if rzut in cuda.keys():
+            eval(cuda[rzut])
+        else:
+            rzut = rzut.lower()
+            rzut = rzut.replace('d','k')
+            rzut = re.sub('(\d+)?k\d+',dice_replace,rzut)
+            try:
+                wrzut=int(rzut)
+            except ValueError:
+                try:
+                    wrzut = rzut+'='+str(eval(rzut))
+                except:
+                    update.message.reply_text('jedyne co mi przychodzi na myśl to 42!')
+                else:
+                    update.message.reply_text(str(wrzut))
+            else:
+                update.message.reply_text(str(wrzut))
 def answer(bot, update):
     if '99' in update.message.text.lower():
         update.message.reply_text('99? trafiasz w Jandziaka!')
+def hamrol(bot, update):
+    if(update.message.chat.id==int(os.environ.get('KOSTKA_PRV'))):
+        img=os.environ.get('KOSTKA_HAM')+choice(os.listdir(os.environ.get('KOSTKA_HAM')))
+        bot.send_photo(chat_id=update.message.chat.id, photo=open(img, 'rb'))
+
+    else:
+        update.message.reply_text(os.environ.get('KOSTKA_PRV'))
 def main():
 
-    updater = Updater(os.environ.get('BOTID'))
+    updater = Updater(os.environ.get('KOSTKA_BOTID'))
 
     dp = updater.dispatcher
 
