@@ -4,6 +4,7 @@ import re
 import logging
 import os
 import time
+import requests
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -11,7 +12,9 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 cuda = {'ham':'hamrol(bot, update)',
-        'ka':'update.message.reply_text(\'🧻\')'}
+        'ka':'update.message.reply_text(\'🧻\')',
+        'sushi':'update.message.reply_text(\'🍣\')',
+        'mlecz':'update.message.reply_text(\'🥛\')'}
 
 def start(bot, update):
     update.message.reply_text('Wystartowałem!')
@@ -60,7 +63,8 @@ def roll(bot, update, args):
                 try:
                     wrzut = rzut+'='+str(eval(rzut))
                 except:
-                    update.message.reply_text('jedyne co mi przychodzi na myśl to 42!')
+                    resp=requests.get('https://geek-jokes.sameerkumar.website/api')
+                    update.message.reply_text(resp.json())
                 else:
                     update.message.reply_text(str(wrzut))
             else:
