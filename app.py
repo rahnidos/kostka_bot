@@ -79,10 +79,14 @@ def roll(bot, update, args):
                 answer(bot,update,resp)
 
 def answer(bot, update, ans):
-    ans='@'+update.message.from_user.username+' '+ans
+    if (update.message.from_user.username is None): tusername='Niewiadomokto'
+    else: tusername=update.message.from_user.username
+    ans='@'+tusername+' '+ans
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
 def answerGifUrl(bot, update, url):
-    ans='@'+update.message.from_user.username+': \"'+update.message.text+'\"'
+    if (update.message.from_user.username is None): tusername='Niewiadomokto'
+    else: tusername=update.message.from_user.username
+    ans='@'+tusername+': \"'+update.message.text+'\"'
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
     bot.send_animation(chat_id=update.message.chat_id, animation=url)
 
