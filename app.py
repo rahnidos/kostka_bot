@@ -79,12 +79,12 @@ def roll(bot, update, args):
                 answer(bot,update,resp)
 
 def answer(bot, update, ans):
-    if (update.message.from_user.username is None): tusername='Niewiadomokto'
+    if (update.message.from_user.username is None): tusername=update.message.from_user.last_name
     else: tusername=update.message.from_user.username
     ans='@'+tusername+': '+ans
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
 def answerGifUrl(bot, update, url):
-    if (update.message.from_user.username is None): tusername='Niewiadomokto'
+    if (update.message.from_user.username is None): tusername=update.message.from_user.last_name
     else: tusername=update.message.from_user.username
     ans='@'+tusername+': \"'+update.message.text+'\"'
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
@@ -105,7 +105,8 @@ def addhamrol(bot, update):
 def choosewho(bot, update):
     group=bot.get_chat_administrators(update.message.chat.id)
     mem=choice(group)
-    ans='@'+mem.user.username
+    if (mem.user.username is None): ans=mem.user.last_name
+    else: ans='@'+mem.user.username
     answer(bot, update, ans)
 def setorder(bot, update, args):
     try:
@@ -117,7 +118,8 @@ def setorder(bot, update, args):
         answer(bot, update, ans)
     except IndexError:
         answer(bot, update, 'Ciężko mi coś takiego ogarnąć')
-
+def info(bot, update):
+    print(update.message)
 def main():
 
     updater = Updater(os.environ.get('KOSTKA_BOTID'))
@@ -130,7 +132,9 @@ def main():
     dp.add_handler(CommandHandler("roll", roll, pass_args=True))
     dp.add_handler(CommandHandler("kto", choosewho))
     dp.add_handler(CommandHandler("who", choosewho))
+    dp.add_handler(CommandHandler("i", info))
     dp.add_handler(CommandHandler("order", setorder, pass_args=True))
+
     dp.add_handler(MessageHandler(Filters.photo, addhamrol))
     dp.add_error_handler(error)
 
