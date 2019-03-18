@@ -81,7 +81,7 @@ def roll(bot, update, args):
 def answer(bot, update, ans):
     if (update.message.from_user.username is None): tusername='Niewiadomokto'
     else: tusername=update.message.from_user.username
-    ans='@'+tusername+' '+ans
+    ans='@'+tusername+': '+ans
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
 def answerGifUrl(bot, update, url):
     if (update.message.from_user.username is None): tusername='Niewiadomokto'
@@ -102,6 +102,12 @@ def addhamrol(bot, update):
     fname=os.environ.get('KOSTKA_HAM')+str(int(time.time()))+'.jpg'
     newFile.download(fname)
     bot.sendMessage(chat_id=update.message.chat_id, text="zdjęcie dodane do zasobów, dziękuję")
+def choosewho(bot, update):
+    group=bot.get_chat_administrators(update.message.chat.id)
+    mem=choice(group)
+    ans='@'+mem.user.username
+    answer(bot, update, ans)
+
 def main():
 
     updater = Updater(os.environ.get('KOSTKA_BOTID'))
@@ -112,6 +118,7 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("rzut", roll, pass_args=True))
     dp.add_handler(CommandHandler("roll", roll, pass_args=True))
+    dp.add_handler(CommandHandler("kto", choosewho))
     dp.add_handler(MessageHandler(Filters.photo, addhamrol))
     dp.add_error_handler(error)
 
