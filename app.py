@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-dice = Optional(Word(nums), default='1')+oneOf('k K d D')+oneOf('2 4 6 8 10 12 16 20 100')+Optional(oneOf('- + * /')+Word(nums))
+dice = Optional(Word(nums), default='1')+oneOf('k K d D')+oneOf('2 3 4 5 6 8 10 12 16 20 50 100')+Optional(oneOf('- + * /')+Word(nums))
 cuda = {'ham':'hamrol(bot, update)',
         'ka':'answer(bot,update,\'🧻\')',
         'sushi':'answer(bot,update,\'🍣\')',
@@ -31,9 +31,13 @@ def error(bot, update, error):
 def rollDice(t,n,m):
     nn=int(n)
     if(nn>1 or m):
-        d='('
+        dtab=[]
         for each in range(int(nn)):
-            d = d + str(randint(1,int(t))) + '+'
+            dtab.append(randint(1,int(t)))
+        dtab.sort()
+        d='('
+        for el in dtab:
+            d+=str(el)+'+'
         d=d[:-1]+')'
         ret=evalRoll(d,m)
     else:
