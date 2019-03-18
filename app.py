@@ -1,5 +1,5 @@
 from telegram.ext import *
-from random import randint, choice
+from random import randint, choice, shuffle
 import re
 import logging
 import os
@@ -53,7 +53,7 @@ def roll(bot, update, args):
     try:
         rzut=args[0]
     except IndexError:
-        update.message.reply_text('Ale czym mam rzucać?')
+        answer(bot, update, 'Ale czym mam rzucać?')
         rzut=''
     if(rzut):
         w=''
@@ -107,6 +107,16 @@ def choosewho(bot, update):
     mem=choice(group)
     ans='@'+mem.user.username
     answer(bot, update, ans)
+def setorder(bot, update, args):
+    try:
+        rzut=args[1]
+        shuffle(args)
+        ans=''
+        for el in args:
+            ans+=el+' '
+        answer(bot, update, ans)
+    except IndexError:
+        answer(bot, update, 'Ciężko mi coś takiego ogarnąć')
 
 def main():
 
@@ -119,6 +129,8 @@ def main():
     dp.add_handler(CommandHandler("rzut", roll, pass_args=True))
     dp.add_handler(CommandHandler("roll", roll, pass_args=True))
     dp.add_handler(CommandHandler("kto", choosewho))
+    dp.add_handler(CommandHandler("who", choosewho))
+    dp.add_handler(CommandHandler("order", setorder, pass_args=True))
     dp.add_handler(MessageHandler(Filters.photo, addhamrol))
     dp.add_error_handler(error)
 
