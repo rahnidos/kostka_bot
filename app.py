@@ -68,8 +68,8 @@ def roll(bot, update, args):
                 w=rollDice(result[0][2],result[0][0],m)
                 rolls=rolls+w+', '
             if (rolls==''):
-                w=requests.get('https://api.tenor.com/v1/random?key='+os.environ.get('KOSTKA_TENORAPI')+'&q=whaaat&limit=1')
-                answerImgUrl(bot,update,w.json()['results'][0]['media'][0]['gif']['url'])
+                w=requests.get('https://api.tenor.com/v1/random?key='+os.environ.get('KOSTKA_TENORAPI')+'&q=what&limit=1')
+                answerGifUrl(bot,update,w.json()['results'][0]['media'][0]['gif']['url'])
             else:
                 resp=rolls[:-2]
                 answer(bot,update,resp)
@@ -77,7 +77,9 @@ def roll(bot, update, args):
 def answer(bot, update, ans):
     ans='@'+update.message.from_user.username+' '+ans
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
-def answerImgUrl(bot, update, url):
+def answerGifUrl(bot, update, url):
+    ans='@'+update.message.from_user.username+': \"'+update.message.text+'\"'
+    bot.sendMessage(chat_id=update.message.chat_id, text=ans)
     bot.send_animation(chat_id=update.message.chat_id, animation=url)
 
 def hamrol(bot, update):
