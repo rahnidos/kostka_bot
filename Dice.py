@@ -1,15 +1,18 @@
 from random import randint, choice, shuffle, seed
 from time import time
-import os, fnmatch
-
+import os
+from texts import *
 class Dice:
 
 
     def __init__(self):
         self.__hampath=''
-        self.__mana=time()-3600
+        self.__mana=time()
         self.__prvchat=''
-        self.__special_dices={'ham':'_hamrol',
+        self.__special_dices={'ham':'_hamrol()',
+                'coin': '_specimglist(\'./coins/\')',
+                'czy' : '_speclist(verd)',
+                'card': '_specimglist(\'./cards/\')',
                 'ka':'🧻',
                 'sushi':'🍣',
                 'mlecz':'🥛'}
@@ -62,26 +65,44 @@ class Dice:
 
     def rollSpecial(self,key,chatid):
         if (self.special_dices[key][0]=='_'):
-            func='self.'+self.special_dices[key][1:]+'()'
+            func='self.'+self.special_dices[key][1:]
             if (self.__prvchat==chatid):
                 return eval(func)
             else:
-                print(chatid)
-                print(self.__prvchat)
-                return ['t','to nie na telefon takie rozmowy']
+                return ['t',comm['noprv']]
         else:
             return ['t',self.special_dices[key]]
 
     def rollImg(self,path):
-        img=choice(fnmatch.filter(os.listdir(path), '*.jpg'))
+        seed(time())
+        valid_images = [".jpg",".gif",".png"]
+        imgs=[]
+        for f in os.listdir(path):
+            ext = os.path.splitext(f)[1]
+            if ext.lower() not in valid_images:
+                continue
+            imgs.append(f)
+        img=choice(imgs)
         return path+img
 
+    def shufflelist(self,list):
+        shuffle(list)
+        return list
+
+    def listchoice(self,list):
+        return choice(list)
 
     #above this line there are special dices functions
     def hamrol(self):
         if (self.__hampath==''):
-            return ['t','Coś poległo w konfiguracji...']
-        if (self.__mana>time()):
-            return ['t','Mam za mało many na tak potężny czar. Musisz poczekać']
-        self.__mana=time()+10
+            return ['t',comm['conferr']]
+        elif (self.__mana>time()):
+            return ['t',comm['nemana']]
+        self.__mana=time()+3600
         return ['p',self.rollImg(self.__hampath)]
+
+    def speclist(self,list):
+        return ['t',choice(list)]
+    def specimglist(self,path):
+        img=self.rollImg(path)
+        return ['p',img]

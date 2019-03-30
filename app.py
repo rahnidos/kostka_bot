@@ -1,7 +1,9 @@
 from telegram.ext import *
-import logging, os, time, requests
+from time import time
+import logging, os, requests
 from pyparsing import *
 from Dice import *
+from texts import *
 
 #logging configuration
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -12,9 +14,9 @@ dices = Optional(Word(nums), default='1')+oneOf('k K d D')+oneOf('2 3 4 5 6 8 10
 #special "dices"
 #telegram bot functions
 def start(bot, update):
-    update.message.reply_text('Wystartowałem!')
+    update.message.reply_text(comm['stared'])
 def help(bot, update):
-    update.message.reply_text('Masz do mnie jakiś problem?')
+    update.message.reply_text(helptxt)
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"', update, error)
 def answer(bot, update, ans):
@@ -37,7 +39,7 @@ def roll(bot, update, args):
     try:
         rzut=args[0]
     except IndexError:
-        answer(bot, update, 'Ale czym mam rzucać?')
+        answer(bot, update, comm['nodice'])
         rzut=''
     if(rzut):
         w=''
@@ -70,25 +72,27 @@ def roll(bot, update, args):
 def addhamrol(bot, update):
     file_id = update.message.photo[-1].file_id
     newFile = bot.getFile(file_id)
-    fname=os.environ.get('KOSTKA_HAM')+str(int(time.time()))+'.jpg'
+    fname=os.environ.get('KOSTKA_HAM')+str(int(time()))+'.jpg'
     newFile.download(fname)
-    bot.sendMessage(chat_id=update.message.chat_id, text="zdjęcie dodane do zasobów, dziękuję")
+    bot.sendMessage(chat_id=update.message.chat_id, text=comm['phadded'])
+
 def choosewho(bot, update):
     group=bot.get_chat_administrators(update.message.chat.id)
-    mem=choice(group)
+    mem=dice.listchoice(group)
+    print(group)
     if (mem.user.username is None): ans=mem.user.last_name
     else: ans='@'+mem.user.username
     answer(bot, update, ans)
+
 def setorder(bot, update, args):
     try:
         rzut=args[1]
-        shuffle(args)
         ans=''
-        for el in args:
+        for el in dice.shufflelist(args):
             ans+=el+' '
         answer(bot, update, ans)
     except IndexError:
-        answer(bot, update, 'Ciężko mi coś takiego ogarnąć')
+        answer(bot, update, comm['nunderstand'])
 
 dice=Dice()
 dice.hampath=os.environ.get('KOSTKA_HAM')
