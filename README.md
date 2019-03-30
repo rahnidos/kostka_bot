@@ -8,8 +8,8 @@ Some functionalities are available only on private group.
 
 ## Requirements
 
-Python-telegram-bot module
-Tenor API key
+* Python-telegram-bot module
+* Tenor API key
 
 ## Instalation
 
