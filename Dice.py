@@ -35,6 +35,7 @@ class Dice:
 
     def rollDices(self,type,number,mods,dkeep):
         nn=int(number)
+        if (nn>100): nn=100
         seed(time())
         if (dkeep=='D' or dkeep=='K'): reroll=1
         else: reroll=0

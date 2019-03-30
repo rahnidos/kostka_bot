@@ -5,11 +5,12 @@ comm={
 'nunderstand': 'Ciężko mi coś takiego ogarnąć',
 'noprv': 'To nie na takie rozmowy jest...',
 'conferr': 'Coś poległo w konfiguracji...',
-'nemana': 'Mam za mało many na tak potężny czar. Musisz poczekać.'
+'nemana': 'Mam za mało many na tak potężny czar. Musisz poczekać.',
+'toomuch': 'Co za dużo to nie zdrowo. Wystarczą Ci 2 kości'
 
 }
 helptxt='''
-/roll [liczba kości][K || k || D || d][typ kości][modyfikator]
+/roll [liczba kości (maks 100)][K || k || D || d][typ kości][modyfikator]
 [d || k] - normalne rzuty
 [D || K] - powtarza rzut przy maksymalnym wyniku
 dostępne kości: 2 3 4 5 6 8 10 12 16 20 50 100
