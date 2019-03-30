@@ -13,8 +13,8 @@ Tenor API key
 ## Instalation
 
 To run it you need some OS variables set:
-KOSTKA_BOTID - Telegram Bot Key
-KOSTKA_HAM - path to folder with special photos for command /roll ham
+* KOSTKA_BOTID - Telegram Bot Key
+* KOSTKA_HAM - path to folder with special photos for command /roll ham
 KOSTKA_PRV - group chat id - for /roll ham and other private command
 KOSTKA_TENORAPI - your tenor api key
 
