@@ -10,7 +10,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 #type of dices and dice notation
-dices = Optional(Word(nums), default='1')+oneOf('k K d D')+oneOf('2 3 4 5 6 8 10 12 16 20 50 100')+Optional(oneOf('- + * /')+Word(nums))
+dices = Optional(Word(nums), default='1')+oneOf('k K d D')+Word(nums)+Optional(oneOf('- + * /')+Word(nums))
 #special "dices"
 #telegram bot functions
 def start(bot, update):
@@ -22,13 +22,15 @@ def error(bot, update, error):
 def answer(bot, update, ans):
     ans='@'+findUserName(bot,update)+': '+ans
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
-def answerPhoto(bot, update, path):
-    bot.send_photo(chat_id=update.message.chat.id, photo=open(path, 'rb'))
+def answerPhoto(bot, update, path, caption):
+    bot.send_photo(chat_id=update.message.chat.id, photo=open(path, 'rb'), caption=caption)
 def answerGifUrl(bot, update, url):
     ans='@'+findUserName(bot,update)+': \"'+update.message.text+'\"'
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
     bot.send_animation(chat_id=update.message.chat_id, animation=url)
 def info(bot, update):
+
+    bot.send_photo(chat_id=update.message.chat_id, photo='https://raw.githubusercontent.com/rahnidos/kostka_bot/master/coins/head.png')
     print(update.message)
 def findUserName(bot,update):
     tusername=update.message.from_user.first_name
@@ -48,7 +50,11 @@ def roll(bot, update, args):
             if (result[0]=='t'):
                 answer(bot,update,result[1])
             elif (result[0]=='p'):
-                answerPhoto(bot,update,result[1])
+                try:
+                    caption=result[2]
+                except IndexError:
+                    caption=''
+                answerPhoto(bot,update,result[1],caption)
         else:
             s=''
             for el in args:
@@ -79,11 +85,13 @@ def addhamrol(bot, update):
 def choosewho(bot, update):
     group=bot.get_chat_administrators(update.message.chat.id)
     mem=dice.listchoice(group)
-    print(group)
-    if (mem.user.username is None): ans=mem.user.last_name
-    else: ans='@'+mem.user.username
+    ans=mem.user.first_name
+    if (mem.user.last_name): ans=mem.user.last_name
+    if (mem.user.username): ans=mem.user.username
     answer(bot, update, ans)
-
+def answerczy(bot, update):
+    ans=dice.listchoice(verd)
+    answer(bot, update, ans)
 def setorder(bot, update, args):
     try:
         rzut=args[1]
@@ -107,6 +115,7 @@ def main():
     dp.add_handler(CommandHandler("roll", roll, pass_args=True))
     dp.add_handler(CommandHandler("kto", choosewho))
     dp.add_handler(CommandHandler("who", choosewho))
+    dp.add_handler(CommandHandler("czy", answerczy))
     dp.add_handler(CommandHandler("i", info))
     #dp.add_handler(CommandHandler("t", test))
     dp.add_handler(CommandHandler("order", setorder, pass_args=True))

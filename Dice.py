@@ -7,6 +7,7 @@ class Dice:
 
     def __init__(self):
         self.__hampath=''
+        self.__lastseed=0
         self.__mana=time()
         self.__prvchat=''
         self.__special_dices={'ham':'_hamrol()',
@@ -35,8 +36,11 @@ class Dice:
 
     def rollDices(self,type,number,mods,dkeep):
         nn=int(number)
+        if (int(type)>1024): type='1024'
         if (nn>100): nn=100
-        seed(time())
+        if (self.__lastseed==time()):
+            seed(time())
+            self.__lastseed=time()
         if (dkeep=='D' or dkeep=='K'): reroll=1
         else: reroll=0
         dtab=[]
@@ -99,8 +103,9 @@ class Dice:
             return ['t',comm['conferr']]
         elif (self.__mana>time()):
             return ['t',comm['nemana']]
-        self.__mana=time()+3600
-        return ['p',self.rollImg(self.__hampath)]
+        umana=randint(1,3600)
+        self.__mana=time()+umana
+        return ['p',self.rollImg(self.__hampath),comm['cooldown']+str(umana)+'s']
 
     def speclist(self,list):
         return ['t',choice(list)]
