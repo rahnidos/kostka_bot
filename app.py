@@ -58,7 +58,7 @@ def roll(bot, update, args):
         else:
             s=''
             for el in args:
-                s=s+el
+                s=s+el+' '
             rolls=''
             for result in dices.scanString(s):
                 try:
