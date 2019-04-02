@@ -1,5 +1,5 @@
 from random import randint, choice, shuffle, seed
-from time import time
+from time import time, localtime, strftime
 import os
 from texts import *
 class Dice:
@@ -105,7 +105,8 @@ class Dice:
             return ['t',comm['nemana']]
         umana=randint(1,3600)
         self.__mana=time()+umana
-        return ['p',self.rollImg(self.__hampath),comm['cooldown']+str(umana)+'s']
+        newtime=localtime(self.__mana)
+        return ['p',self.rollImg(self.__hampath),comm['cooldown']+str(umana)+'s ('+strftime("%H:%M:%S",newtime)+')']
 
     def speclist(self,list):
         return ['t',choice(list)]
