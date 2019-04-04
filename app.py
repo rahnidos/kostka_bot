@@ -92,6 +92,13 @@ def choosewho(bot, update):
 def answerczy(bot, update):
     ans=dice.listchoice(verd)
     answer(bot, update, ans)
+def rpsCh(bot, update):
+    ans=dice.listchoice(rps)
+    answer(bot, update, ans)
+def rpslsCh(bot, update):
+    ans=dice.listchoice(rpsls)
+    answer(bot, update, ans)
+
 def setorder(bot, update, args):
     try:
         rzut=args[1]
@@ -105,6 +112,7 @@ def setorder(bot, update, args):
 dice=Dice()
 dice.hampath=os.environ.get('KOSTKA_HAM')
 dice.prvchat=int(os.environ.get('KOSTKA_PRV'))
+
 def main():
 
     updater = Updater(os.environ.get('KOSTKA_BOTID'))
@@ -116,6 +124,8 @@ def main():
     dp.add_handler(CommandHandler("kto", choosewho))
     dp.add_handler(CommandHandler("who", choosewho))
     dp.add_handler(CommandHandler("czy", answerczy))
+    dp.add_handler(CommandHandler("rps", rpsCh))
+    dp.add_handler(CommandHandler("rpsls", rpslsCh))
     dp.add_handler(CommandHandler("i", info))
     #dp.add_handler(CommandHandler("t", test))
     dp.add_handler(CommandHandler("order", setorder, pass_args=True))

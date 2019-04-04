@@ -23,7 +23,9 @@ rzuty specjalne:
 /kto - losuje jedną osobę spośród adminów grupy (działa też /who)
 /czy - odpowiada na najtrudniejsze pytania filozoficzne
 /order - losuje porządek słów jakie otrzyma w paramaterach komendy
-
+/rps i /rpslc - rock - paper - scisors, oraz wersja z lizard - spock
 '''
 
 verd=['tak','nie','trudno powiedzieć']
+rps=['✊','✋','✌']
+rpsls=['✊','✋','✌','🖖','🦎']
