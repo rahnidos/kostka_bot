@@ -26,6 +26,9 @@ rzuty specjalne:
 /rps i /rpslc - rock - paper - scisors, oraz wersja z lizard - spock
 '''
 
-verd=['tak','nie','trudno powiedzieć']
+verd=['tak','nie','trudno powiedzieć','oczywiście','niekoniecznie',
+'to w zależności tak trochę','jak najbardziej','niestety','absolutnie!',
+'na pewno','skąd mam wiedzieć?','bez sensu','i tak i nie','proszę o inny zestaw pytań',
+'jasne','nie inaczej']
 rps=['✊','✋','✌']
 rpsls=['✊','✋','✌','🖖','🦎']
