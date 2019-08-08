@@ -96,6 +96,7 @@ class Dice:
 
     def listchoice(self,list):
         return choice(list)
+    
 
     #above this line there are special dices functions
     def hamrol(self):
