@@ -5,6 +5,7 @@ from pyparsing import *
 from Dice import *
 from texts import *
 
+
 #logging configuration
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -24,6 +25,8 @@ def answer(bot, update, ans):
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
 def answerPhoto(bot, update, path, caption):
     bot.send_photo(chat_id=update.message.chat.id, photo=open(path, 'rb'), caption=caption)
+def answerPhotoRaw(bot, update, img, caption):
+    bot.send_photo(chat_id=update.message.chat.id, photo=img, caption=caption)
 def answerGifUrl(bot, update, url):
     ans='@'+findUserName(bot,update)+': \"'+update.message.text+'\"'
     bot.sendMessage(chat_id=update.message.chat_id, text=ans)
@@ -98,7 +101,24 @@ def rpsCh(bot, update):
 def rpslsCh(bot, update):
     ans=dice.listchoice(rpsls)
     answer(bot, update, ans)
+def card(bot, update, args):
+    try:
+        arg=args[0]
+    except IndexError:
+        arg=1
+    try:
+        liczba=int(arg)
+    except ValueError:
+        liczba=1
 
+    answerPhotoRaw(bot, update, dice.drawCards(liczba), '')
+def coin(bot, update, args):
+    try:
+        set=args[0]
+    except IndexError:
+        set='none'
+    result=dice.flipCoin(set)
+    answerPhoto(bot, update, result[1], result[2])
 def setorder(bot, update, args):
     try:
         rzut=args[1]
@@ -121,6 +141,8 @@ def main():
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("rzut", roll, pass_args=True))
     dp.add_handler(CommandHandler("roll", roll, pass_args=True))
+    dp.add_handler(CommandHandler("card", card, pass_args=True))
+    dp.add_handler(CommandHandler("coin", coin, pass_args=True))
     dp.add_handler(CommandHandler("kto", choosewho))
     dp.add_handler(CommandHandler("who", choosewho))
     dp.add_handler(CommandHandler("czy", answerczy))

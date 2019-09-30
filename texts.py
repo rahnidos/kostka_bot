@@ -24,6 +24,8 @@ rzuty specjalne:
 /czy - odpowiada na najtrudniejsze pytania filozoficzne
 /order - losuje porządek słów jakie otrzyma w paramaterach komendy
 /rps i /rpslc - rock - paper - scisors, oraz wersja z lizard - spock
+/card - losuje kartę. moze wylosować maks 3 na raz. liczbę kart podajemy jako parametr
+/coin - rzuca monetą. jako parametr można podać zestaw monet (np. a,b itp.)
 '''
 
 verd=['tak','nie','trudno powiedzieć','oczywiście','niekoniecznie',

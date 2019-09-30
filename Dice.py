@@ -1,7 +1,9 @@
-from random import randint, choice, shuffle, seed
+from random import randint, choice, shuffle, seed, sample
+from PIL import Image
 from time import time, localtime, strftime
 import os
 from texts import *
+from io import BytesIO
 class Dice:
 
 
@@ -11,12 +13,10 @@ class Dice:
         self.__mana=time()
         self.__prvchat=''
         self.__special_dices={'ham':'_hamrol()',
-                'coin': '_specimglist(\'./coins/\')',
-                'czy' : '_speclist(verd)',
-                'card': '_specimglist(\'./cards/\')',
                 'ka':'🧻',
                 'sushi':'🍣',
                 'mlecz':'🥛'}
+        self.__imglist=[]
 
     def get_special_dices(self):
         return self.__special_dices
@@ -78,17 +78,27 @@ class Dice:
         else:
             return ['t',self.special_dices[key]]
 
+    def listImg(self,path):
+        valid_images = [".jpg",".gif",".png"]
+
+        for f in os.listdir(path):
+
+            if os.path.isdir(path+f):
+                self.listImg(path+'/'+f)
+            else:
+                ext = os.path.splitext(f)[1]
+                if ext.lower() not in valid_images:
+                    continue
+                self.__imglist.append(path+'/'+f)
+
     def rollImg(self,path):
         seed(time())
         valid_images = [".jpg",".gif",".png"]
-        imgs=[]
-        for f in os.listdir(path):
-            ext = os.path.splitext(f)[1]
-            if ext.lower() not in valid_images:
-                continue
-            imgs.append(f)
-        img=choice(imgs)
-        return path+img
+        self.__imglist=[]
+        self.listImg(path)
+        img=choice(self.__imglist)
+
+        return img
 
     def shufflelist(self,list):
         shuffle(list)
@@ -96,7 +106,40 @@ class Dice:
 
     def listchoice(self,list):
         return choice(list)
-    
+
+    def flipCoin(self,set):
+        comm='zestaw: wszystkie'
+        if os.path.isdir('./coins/'+set):
+            coin=self.rollImg('./coins/'+set)
+            comm='zestaw: '+set
+        else:
+            coin=self.rollImg('./coins/')
+            comm='zestaw: nieznany (czyli wszystkie)'
+        return ['p',coin,comm]
+    def drawCards(self,num):
+        if (num>3): num=3
+        if (num==0): num=1
+        im = Image.new("RGB",(213,100),0)
+        valid_images = [".jpg",".gif",".png"]
+        cards=[]
+        for f in os.listdir('./cards'):
+            ext = os.path.splitext(f)[1]
+            if ext.lower() not in valid_images:
+                continue
+            cards.append(f)
+        imglist=sample(cards,num)
+        x=0
+
+        for img in imglist:
+            tmpf=Image.open('./cards/'+img)
+            tmpf.thumbnail((70,100))
+            im.paste(tmpf,(x,0))
+            x=x+71
+        bio = BytesIO()
+        bio.name = 'cards.jpg'
+        im.save(bio, 'JPEG')
+        bio.seek(0)
+        return bio
 
     #above this line there are special dices functions
     def hamrol(self):
