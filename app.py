@@ -149,7 +149,7 @@ def main():
     dp.add_handler(CommandHandler("rps", rpsCh))
     dp.add_handler(CommandHandler("rpsls", rpslsCh))
     dp.add_handler(CommandHandler("i", info))
-    #dp.add_handler(CommandHandler("t", test))
+    
     dp.add_handler(CommandHandler("order", setorder, pass_args=True))
     dp.add_handler(MessageHandler(Filters.photo, addhamrol))
     dp.add_error_handler(error)
