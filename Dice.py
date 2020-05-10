@@ -12,6 +12,7 @@ class Dice:
         self.__lastseed=0
         self.__mana=time()
         self.__prvchat=''
+        self.__prvroller=False
         self.__special_dices={'ham':'_hamrol()',
                 'ka':'🧻',
                 'sushi':'🍣',
@@ -29,6 +30,10 @@ class Dice:
         self.__prvchat=value
     def get_prvchat(self):
         return self.__prvchat
+    def set_prvroller(self,value):
+        self.__prvroller=value
+    def get_prvroller(sefl):
+        return self._prvroller
 
     hampath=property(get_hampath,set_hampath)
     special_dices=property(get_special_dices)
@@ -147,10 +152,16 @@ class Dice:
             return ['t',comm['conferr']]
         elif (self.__mana>time()):
             return ['t',comm['nemana']]
-        umana=randint(1,3600)
+        print(self.__prvroller)
+        if (self.__prvroller):
+            umana=1
+            hpath=self.__hampath+'/s'
+        else:
+            umana=randint(1,3600)
+            hpath=self.__hampath
         self.__mana=time()+umana
         newtime=localtime(self.__mana)
-        return ['p',self.rollImg(self.__hampath),comm['cooldown']+str(umana)+'s ('+strftime("%H:%M:%S",newtime)+')']
+        return ['p',self.rollImg(hpath),comm['cooldown']+str(umana)+'s ('+strftime("%H:%M:%S",newtime)+')']
 
     def speclist(self,list):
         return ['t',choice(list)]

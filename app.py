@@ -49,6 +49,10 @@ def roll(bot, update, args):
     if(rzut):
         w=''
         if rzut in dice.special_dices.keys():
+            if(str(update.message.from_user.id) == os.environ.get('KOSTKA_PRVROLLER')):
+                dice.set_prvroller(True)
+            else:
+                dice.set_prvroller(False)
             result=dice.rollSpecial(rzut,update.message.chat.id)
             if (result[0]=='t'):
                 answer(bot,update,result[1])
@@ -135,7 +139,7 @@ dice.prvchat=int(os.environ.get('KOSTKA_PRV'))
 
 def main():
 
-    updater = Updater(os.environ.get('KOSTKA_BOTID'))
+    updater = Updater(os.environ.get('KOSTKA_BOTID'), use_context=False)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
@@ -149,7 +153,6 @@ def main():
     dp.add_handler(CommandHandler("rps", rpsCh))
     dp.add_handler(CommandHandler("rpsls", rpslsCh))
     dp.add_handler(CommandHandler("i", info))
-    
     dp.add_handler(CommandHandler("order", setorder, pass_args=True))
     dp.add_handler(MessageHandler(Filters.photo, addhamrol))
     dp.add_error_handler(error)

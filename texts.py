@@ -31,6 +31,8 @@ rzuty specjalne:
 verd=['tak','nie','trudno powiedzieć','oczywiście','niekoniecznie',
 'to w zależności tak trochę','jak najbardziej','niestety','absolutnie!',
 'na pewno','skąd mam wiedzieć?','bez sensu','i tak i nie','proszę o inny zestaw pytań',
-'jasne','nie inaczej']
+'jasne','nie inaczej','nie mogę zdradzać takich tajemnic','to trochę poufna informacja',
+'nie interesuj się','jakże by mogło być inaczej?','a co Ty sądzisz na ten temat?',
+'dajże spokój z takimi pytaniami']
 rps=['✊','✋','✌']
 rpsls=['✊','✋','✌','🖖','🦎']
