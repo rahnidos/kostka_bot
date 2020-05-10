@@ -34,7 +34,7 @@ def answerGifUrl(bot, update, url):
 def info(bot, update):
 
     bot.send_photo(chat_id=update.message.chat_id, photo='https://raw.githubusercontent.com/rahnidos/kostka_bot/master/coins/head.png')
-    print('PRVROLLER:'+os.environ.get('KOSTKA_PRVROLLER'))
+    
     print(update.message)
 def findUserName(bot,update):
     tusername=update.message.from_user.first_name
