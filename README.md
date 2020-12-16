@@ -1,3 +1,6 @@
+# This is OLD and abandoned project. 
+I made everything again, from scratch [here](https://github.com/rahnidos/staszekBOT)
+
 # Throwing dices telegram bot
 
 This program provide some useless functionality like throwing dices and photo of our friend.
